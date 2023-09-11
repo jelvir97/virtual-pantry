@@ -1,6 +1,6 @@
 from flask import Flask, render_template,flash,get_flashed_messages, request,session, redirect
 from flask_debugtoolbar import DebugToolbarExtension
-from models import connect_db, User, db, Feedback
+from models import connect_db, db
 # from forms import RegisterForm, LoginForm, AddFeedbackForm, UpdateFeedbackForm
 
 app = Flask(__name__)
