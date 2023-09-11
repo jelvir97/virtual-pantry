@@ -1,6 +1,8 @@
 from flask import Flask, render_template,flash,get_flashed_messages, request,session, redirect
 from flask_debugtoolbar import DebugToolbarExtension
-from models import connect_db, db, Ingredient, Recipe, Category, Pantry
+from models import connect_db, db, Ingredient, Recipe, Category, Pantry, User
+from flask_login import LoginManager
+
 # from forms import RegisterForm, LoginForm, AddFeedbackForm, UpdateFeedbackForm
 
 app = Flask(__name__)
@@ -13,6 +15,13 @@ app.config["SECRET_KEY"] = 'mangotreeee'
 
 app.app_context().push()
 connect_db(app)
+
+login_manager = LoginManager()
+login_manager.init_app(app)
+
+@login_manager.user_loader
+def load_user(user_id):
+    return User.get(user_id)
 
 @app.route('/')
 def home():
