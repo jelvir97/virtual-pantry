@@ -2,7 +2,7 @@
 
 from csv import DictReader
 from app import db
-from models import Ingredients
+from models import Ingredient
 import requests
 
 
@@ -14,7 +14,7 @@ r = requests.get('https://www.themealdb.com/api/json/v1/1/list.php?i=list')
 ing = r.json()['meals']
 
 for i in ing:
-    ingredient = Ingredients(name=i['strIngredient'])
+    ingredient = Ingredient(name=i['strIngredient'])
     db.session.add(ingredient)
 
 db.session.commit() 
