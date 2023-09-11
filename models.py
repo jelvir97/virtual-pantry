@@ -46,6 +46,8 @@ class Recipe(db.Model):
     ingredients = db.relationship('Ingredient',
                                   secondary='ingredient_recipe', 
                                   backref='recipes')
+    
+    category = db.relationship('Category', backref='recipes')
 
 class IngredientRecipe(db.Model):
     """Many-to-many relationship between ingredients and recipes"""
@@ -59,3 +61,15 @@ class IngredientRecipe(db.Model):
     ingredient_id = db.Column(db.Integer,
                        db.ForeignKey('ingredients.id'),
                        primary_key=True)
+
+class Catgeory(db.Model):
+    """Categories for recipes"""
+
+    __tablename__ = "categories"
+    
+    id = db.Column(db.Integer,
+                   primary_key=True,
+                   autoincrement=True)
+    
+    name = db.Column(db.String(20),
+                     nullable=False)
