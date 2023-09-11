@@ -47,7 +47,9 @@ class Recipe(db.Model):
                                   secondary='ingredient_recipe', 
                                   backref='recipes')
     
-    category = db.relationship('Category', backref='recipes')
+    category = db.Column(db.Integer,
+                         db.ForeignKey('categories.id'),
+                         nullable=False)
 
 class IngredientRecipe(db.Model):
     """Many-to-many relationship between ingredients and recipes"""
@@ -62,7 +64,7 @@ class IngredientRecipe(db.Model):
                        db.ForeignKey('ingredients.id'),
                        primary_key=True)
 
-class Catgeory(db.Model):
+class Category(db.Model):
     """Categories for recipes"""
 
     __tablename__ = "categories"
@@ -73,3 +75,37 @@ class Catgeory(db.Model):
     
     name = db.Column(db.String(20),
                      nullable=False)
+    
+    recipes = db.relationship('Recipe', backref='categories')
+    
+class Pantry(db.Model):
+    """Pantry model for organizing ingredients"""
+
+    __tablename__= "pantries"
+
+    id = db.Column(db.Integer,
+                   primary_key=True,
+                   autoincrement=True)
+    
+    name = db.Column(db.String(20),
+                     nullable=False)
+    
+    type = db.Column(db.String(20),
+                     nullable=False)
+    
+    ingredients =db.relationship('Ingredient',
+                                  secondary='ingredient_pantry', 
+                                  backref='pantries')
+    
+class IngredientPantry(db.Model):
+    """Many-to-many relation between ingredients and pantries"""
+
+    __tablename__ = 'ingredient_pantry'
+    
+    ingredient_id = db.Column(db.Integer,
+                        db.ForeignKey('ingredients.id'),
+                        primary_key=True)
+    
+    pantry_id = db.Column(db.Integer,
+                        db.ForeignKey('pantries.id'),
+                        primary_key=True)
