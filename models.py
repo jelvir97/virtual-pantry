@@ -158,6 +158,8 @@ class User(db.Model, UserMixin):
     
     pantries = db.relationship('Pantry',cascade="all, delete-orphan", backref='user')
 
+    saved_recipes = db.relationship('Recipe', secondary='user_recipe',backref='user')
+
     @classmethod
     def register(cls, f_name, l_name, email, password):
         """Register user w/hashed password & return user."""
@@ -187,3 +189,15 @@ class User(db.Model, UserMixin):
             return u
         else:
             return False
+
+class UserRecipe(db.Model):
+    """Many to many relationship between recipes and user"""
+    __tablename__ = 'user_recipe'
+    
+    user_id = db.Column(db.Integer,
+                        db.ForeignKey('users.id'),
+                        primary_key=True)
+    
+    recipe_id = db.Column(db.Integer,
+                        db.ForeignKey('recipes.id'),
+                        primary_key=True)
