@@ -106,6 +106,13 @@ class Pantry(db.Model):
                         db.ForeignKey('users.id'),
                         nullable=False)
     
+    def add_ingredients(slf, *args):
+        for id in args:
+            i = Ingredient.query.get(int(i))
+            slf.ingredients.append(i)
+        db.session.commit
+
+    
 class IngredientPantry(db.Model):
     """Many-to-many relation between ingredients and pantries"""
 
