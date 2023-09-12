@@ -1,8 +1,12 @@
 """Models for Blogly."""
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin
+from flask_bcrypt import Bcrypt
+# from psycopg2.errors import UniqueViolation
+# from sqlalchemy.exc import IntegrityError
 
 db = SQLAlchemy()
+bcrypt = Bcrypt()
 
 def connect_db(app):
     db.app = app
@@ -133,8 +137,31 @@ class User(db.Model, UserMixin):
     last_name = db.Column(db.String(50),
                      nullable=False)
     
+    email = db.Column(db.String(100),
+                      nullable=False,
+                      unique=True)
+    
+    password = db.Column(db.String(100),
+                         nullable=False)
+    
     img_url = db.Column(db.String(),
                      nullable=False,
                      default='https://www.tenforums.com/geek/gars/images/2/types/thumb_15951118880user.png')
     
     pantries = db.relationship('Pantry',cascade="all, delete-orphan", backref='user')
+
+    @classmethod
+    def register(cls, f_name, l_name, email, password):
+        """Register user w/hashed password & return user."""
+
+        pw_hash = bcrypt.generate_password_hash(password).decode('utf-8')
+        try:
+            new_user = User(first_name=f_name, 
+                            last_name=l_name, 
+                            email=email, 
+                            password=pw_hash)
+        except:
+            return False
+        else:
+            return new_user
+        
