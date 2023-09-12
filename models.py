@@ -165,3 +165,17 @@ class User(db.Model, UserMixin):
         else:
             return new_user
         
+    @classmethod
+    def authenticate(cls, email, pwd):
+        """Validate that user exists & password is correct.
+
+        Return user if valid; else return False.
+        """
+
+        u = User.query.filter_by(email=email).first()
+
+        if u and bcrypt.check_password_hash(u.password, pwd):
+            # return user instance
+            return u
+        else:
+            return False
