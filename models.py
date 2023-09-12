@@ -107,8 +107,9 @@ class Pantry(db.Model):
                         nullable=False)
     
     def add_ingredients(slf, *args):
+        """takes variable arguments for appending to pantry.ingredients"""
         for id in args:
-            i = Ingredient.query.get(int(i))
+            i = Ingredient.query.get(int(id))
             slf.ingredients.append(i)
         db.session.commit
 
