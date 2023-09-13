@@ -2,6 +2,7 @@
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin
 from flask_bcrypt import Bcrypt
+from sqlalchemy_utils import EmailType, URLType
 # from psycopg2.errors import UniqueViolation
 # from sqlalchemy.exc import IntegrityError
 
@@ -145,14 +146,14 @@ class User(db.Model, UserMixin):
     last_name = db.Column(db.String(50),
                      nullable=False)
     
-    email = db.Column(db.String(100),
+    email = db.Column(EmailType,
                       nullable=False,
                       unique=True)
     
-    password = db.Column(db.String(100),
+    password = db.Column(db.String(),
                          nullable=False)
     
-    img_url = db.Column(db.String(),
+    img_url = db.Column(URLType,
                      nullable=False,
                      default='https://www.tenforums.com/geek/gars/images/2/types/thumb_15951118880user.png')
     
