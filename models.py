@@ -47,7 +47,7 @@ class Recipe(db.Model):
     instructions= db.Column(db.Text(),
                             nullable=False)
     
-    measurements= db.Column(db.ARRAY(db.String(20)))
+    measurements= db.Column(db.ARRAY(db.String()))
 
     ingredients = db.relationship('Ingredient',
                                   secondary='ingredient_recipe', 

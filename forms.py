@@ -15,6 +15,6 @@ class LoginForm(ModelForm):
         only = ['email','password']
     
 
-class RecipeForm(ModelForm):
-    class Meta:
-        model = Recipe
+# class RecipeForm(ModelForm):
+#     class Meta:
+#         model = Recipe
