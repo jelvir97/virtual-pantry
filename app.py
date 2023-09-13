@@ -3,10 +3,9 @@ from flask import Flask, render_template,flash,get_flashed_messages, request,ses
 from flask_debugtoolbar import DebugToolbarExtension
 from models import connect_db, db, Ingredient, Recipe, Category, Pantry, User
 from flask_login import LoginManager,login_required
-from forms import LoginForm
+from forms import LoginForm, RegisterForm
 from flask_login import login_user
 
-# from forms import RegisterForm, LoginForm, AddFeedbackForm, UpdateFeedbackForm
 
 app = Flask(__name__)
 
@@ -47,7 +46,22 @@ def login():
 
         flask.flash('Logged in successfully.')
 
-        next = flask.request.args.get('next')
-
-        return flask.redirect(next or flask.url_for('index'))
+        return flask.redirect(url_for('home'))
     return flask.render_template('login.html', form=form)
+
+@app.route('/signup', methods=['GET','POST'])
+def signup():
+    """Registers new user and adds them to db"""
+    form = RegisterForm()
+    if form.validate_on_submit():
+        user = User()
+        form.populate_obj(user)
+        db.session.add(user)
+        db.session.commit()
+        login_user(user)
+        flash('Signed Up Successfully.')
+
+        return redirect(url_for('home'))
+
+    return render_template('signup.html',form=form)
+    
