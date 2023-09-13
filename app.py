@@ -1,5 +1,5 @@
 import flask
-from flask import Flask, render_template,flash,get_flashed_messages, request,session, redirect
+from flask import Flask, render_template,flash,get_flashed_messages, request,session, redirect,url_for
 from flask_debugtoolbar import DebugToolbarExtension
 from models import connect_db, db, Ingredient, Recipe, Category, Pantry, User
 from flask_login import LoginManager,login_required
@@ -48,11 +48,6 @@ def login():
         flask.flash('Logged in successfully.')
 
         next = flask.request.args.get('next')
-        # url_has_allowed_host_and_scheme should check if the url is safe
-        # for redirects, meaning it matches the request host.
-        # See Django's url_has_allowed_host_and_scheme for an example.
-        if not url_has_allowed_host_and_scheme(next, request.host):
-            return flask.abort(400)
 
         return flask.redirect(next or flask.url_for('index'))
     return flask.render_template('login.html', form=form)
