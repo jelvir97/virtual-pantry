@@ -13,6 +13,11 @@ class LoginForm(ModelForm):
     class Meta:
         model = User
         only = ['email','password']
+
+class RegisterForm(ModelForm):
+    class Meta:
+        model = User
+    
     
 
 # class RecipeForm(ModelForm):
