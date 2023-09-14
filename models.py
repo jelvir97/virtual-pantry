@@ -31,6 +31,11 @@ class Ingredient(db.Model):
     name = db.Column(db.String(50),
                      nullable=False)
     
+    def serialize(self):
+        d = {'id':self.id,
+             'name' :self.name}
+        return d
+    
 class Recipe(db.Model):
     """Recipes"""
 
@@ -120,6 +125,15 @@ class Pantry(db.Model):
             i = Ingredient.query.get(int(id))
             slf.ingredients.append(i)
         db.session.commit
+
+    def ingredients_json(self):
+        ings = self.ingredients
+
+        d = {}
+        for i in ings:
+            d.update({i.name:i.serialize()})
+        return d
+
 
     
 class IngredientPantry(db.Model):

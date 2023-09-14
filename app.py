@@ -116,4 +116,9 @@ def add_ing(p_id,name):
     p.ingredients.append(ing)
     db.session.commit()
     return redirect(url_for('view_pantry',p_id=p_id))
+
+@app.route('/pantry/<int:id>/ingredient')
+def list_ingredients(id):
+    p = Pantry.query.get(id)
+    return p.ingredients_json()
     
