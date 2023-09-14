@@ -1,6 +1,8 @@
 from flask_wtf import FlaskForm
 from wtforms_alchemy import model_form_factory
 from models import db, User, Recipe, Ingredient, Pantry
+from wtforms import EmailField
+from wtforms.validators import DataRequired
 
 BaseModelForm = model_form_factory(FlaskForm)
 
@@ -17,6 +19,8 @@ class LoginForm(ModelForm):
 class RegisterForm(ModelForm):
     class Meta:
         model = User
+        exclude = ['img_url']
+    email = EmailField(validators=[DataRequired()])
     
     
 
