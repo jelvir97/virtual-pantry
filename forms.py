@@ -15,6 +15,8 @@ class LoginForm(ModelForm):
     class Meta:
         model = User
         only = ['email','password']
+    
+    email = EmailField(validators=[DataRequired()])
 
 class RegisterForm(ModelForm):
     class Meta:
