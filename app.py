@@ -29,7 +29,7 @@ def load_user(user_id):
 @app.route('/')
 @login_required
 def home():
-    return f'{current_user.first_name}'
+    return render_template('home.html')
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():

@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block title%}Virtual Pantry - {{current_user.first_name}} {{current_user.last_name}}{% endblock %}
+
+{% block contents %}
+<h1>Virtual Pantry</h1>
+<div>
+    <h3>Pantries</h3>
+    {% for pantry in current_user.pantries %}
+        <a href="">{{pantry.name}}</a>
+    {% endfor %}
+    <a href="">New Pantry</a>
+</div>
+<div>
+    <h3>Recipes</h3>
+    {% for rec in current_user.saved_recipes %}
+        <a href="">{{rec.name}}</a>
+    {% endfor %}
+    <a href="">Add Recipe!</a>
+</div>
+
+{% endblock %}
