@@ -3,6 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin
 from flask_bcrypt import Bcrypt
 from sqlalchemy_utils import EmailType, URLType
+from wtforms import PasswordField
 # from psycopg2.errors import UniqueViolation
 # from sqlalchemy.exc import IntegrityError
 
@@ -40,12 +41,15 @@ class Recipe(db.Model):
                    autoincrement=True)
     
     name = db.Column(db.String(50),
-                     nullable=False)
+                     nullable=False,
+                     info={'label': 'Recipe Name'})
     
-    image = db.Column(db.String())
+    image = db.Column(db.String(),
+                      info={'label': 'Recipe Image'})
 
     instructions= db.Column(db.Text(),
-                            nullable=False)
+                            nullable=False,
+                            info={'label': 'Instructions'})
     
     measurements= db.Column(db.ARRAY(db.String()))
 
@@ -55,7 +59,8 @@ class Recipe(db.Model):
     
     category = db.Column(db.Integer,
                          db.ForeignKey('categories.id'),
-                         nullable=False)
+                         nullable=False,
+                         info={'label': 'Category'})
 
 class IngredientRecipe(db.Model):
     """Many-to-many relationship between ingredients and recipes"""
@@ -94,10 +99,12 @@ class Pantry(db.Model):
                    autoincrement=True)
     
     name = db.Column(db.String(20),
-                     nullable=False)
+                     nullable=False,
+                     info={'label': 'Pantry Name'})
     
     type = db.Column(db.String(20),
-                     nullable=False)
+                     nullable=False,
+                     info={'label': 'Type'})
     
     ingredients =db.relationship('Ingredient',
                                   secondary='ingredient_pantry', 
@@ -138,24 +145,31 @@ class User(db.Model, UserMixin):
     
     id = db.Column(db.Integer,
                    primary_key=True,
-                   autoincrement=True)
+                   autoincrement=True,
+                   )
     
     first_name = db.Column(db.String(50),
-                     nullable=False)
+                     nullable=False,
+                     info={'label': 'First Name'})
     
     last_name = db.Column(db.String(50),
-                     nullable=False)
+                     nullable=False,
+                     info={'label': 'Last Name'})
     
     email = db.Column(EmailType,
                       nullable=False,
-                      unique=True)
+                      unique=True,
+                      info={'label': 'Email'})
     
     password = db.Column(db.String(),
-                         nullable=False)
+                         nullable=False,
+                         info={'form_field_class': PasswordField,
+                               'label':'Password'})
     
     img_url = db.Column(URLType,
                      nullable=False,
-                     default='https://www.tenforums.com/geek/gars/images/2/types/thumb_15951118880user.png')
+                     default='https://www.tenforums.com/geek/gars/images/2/types/thumb_15951118880user.png',
+                     info={'label': 'Profile Picture'})
     
     pantries = db.relationship('Pantry',cascade="all, delete-orphan", backref='user')
 
