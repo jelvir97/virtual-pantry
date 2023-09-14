@@ -38,6 +38,7 @@ async function useSuggestion(e) {
 	p_id = $searchBar.data('pantry-id')
 	resp = await axios.get(`http://localhost:5000/pantry/${p_id}/ingredient/${usedSugg}`)
 	cleanUp();
+	updateIngredientsList()
 }
 
 function cleanUp(){
@@ -49,6 +50,23 @@ function appendSuggestion(str){
 	$suggestions.append($newSuggestion);
 }
 
+async function updateIngredientsList(){
+	p_id = $searchBar.data('pantry-id')
+	resp = await axios.get(`http://localhost:5000/pantry/${p_id}/ingredient`)
+	$ingList.empty()
+	console.log(resp)
+	for(let x in resp.data){
+		console.log(typeof resp.data[x])
+		ing= resp.data[x]
+		$ingredient = $(`<li>
+							${ing['name']}
+							<a href="/pantry/ingredient/${ing['id']}/remove">&#10005;</a>
+						</li>`)
+		
+		$ingList.append($ingredient)				
+	}
+}
+
 $searchBar.on('keyup', searchHandler);
 $suggestions.on('click', useSuggestion);
-$
+
