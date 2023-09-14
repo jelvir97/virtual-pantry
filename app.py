@@ -1,5 +1,5 @@
 import flask
-from flask import Flask, render_template,flash,get_flashed_messages, request,session, redirect,url_for
+from flask import Flask, render_template,flash,get_flashed_messages, request,session, redirect,url_for,jsonify
 from flask_debugtoolbar import DebugToolbarExtension
 from models import connect_db, db, Ingredient, Recipe, Category, Pantry, User
 from flask_login import LoginManager,login_required, login_user,logout_user, current_user
@@ -101,3 +101,19 @@ def new_pantry():
 def view_pantry(p_id):
     pantry = Pantry.query.get(p_id)
     return render_template('pantry.html',pantry=pantry)
+
+@app.route('/ingredient/search/<q>')
+def search_ing(q):
+    search = "%{}%".format(q)
+    ings = Ingredient.query.filter(Ingredient.name.ilike(search)).limit(5)
+    results = [ing.name for ing in ings]
+    return jsonify(results)
+
+@app.route('/pantry/<int:p_id>/ingredient/<name>')
+def add_ing(p_id,name):
+    ing = Ingredient.query.filter_by(name=name).one()
+    p =Pantry.query.get(p_id)
+    p.ingredients.append(ing)
+    db.session.commit()
+    return redirect(url_for('view_pantry',p_id=p_id))
+    
