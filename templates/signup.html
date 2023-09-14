@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block title %}Sign-Up!{% endblock %}
+
+
+{% block contents %}
+
+<h2>Sign-Up!</h2>
+<h4>Already have an account? Log in <a href="{{url_for('login')}}">here</a>!</h4>
+
+    <form action="{{ url_for('signup') }}" method="POST">
+        {{ form.hidden_tag() }}
+        {% for field in form
+            if field.widget.input_type != 'hidden' %}
+        <div>
+            <fieldset>
+                {{field.label}}
+                {{field}}
+            </fieldset>
+        </div>
+
+            {% for error in field.errors %}
+                {{ error }}
+            {% endfor %}
+        {% endfor %}
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+{% endblock %}
