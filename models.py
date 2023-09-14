@@ -104,7 +104,7 @@ class Pantry(db.Model):
     
     type = db.Column(db.String(20),
                      nullable=False,
-                     info={'label': 'Type'})
+                     info={'label': 'Type', 'choices':[('pantry','Pantry'),('fridge','Fridge'),('freezer','Freezer')]})
     
     ingredients =db.relationship('Ingredient',
                                   secondary='ingredient_pantry', 
