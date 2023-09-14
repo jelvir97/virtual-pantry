@@ -25,7 +25,7 @@ login_manager.login_view = "login"
 # retrieves user obj for views.
 @login_manager.user_loader
 def load_user(user_id):
-    return User.get(user_id)
+    return User.query.get(user_id)
 
 @app.route('/')
 @login_required
@@ -34,6 +34,8 @@ def home():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+    if User.is_authenticated:
+        return redirect(url_for('home'))
     # Here we use a class of some kind to represent and validate our
     # client-side form data. For example, WTForms is a library that will
     # handle this for us, and we use a custom LoginForm to validate.
@@ -52,10 +54,15 @@ def login():
 @app.route('/signup', methods=['GET','POST'])
 def signup():
     """Registers new user and adds them to db"""
+    if User.is_authenticated:
+        return redirect(url_for('home'))
     form = RegisterForm()
     if form.validate_on_submit():
-        user = User()
-        form.populate_obj(user)
+        print('************')
+        user = User.register(f_name=form.data['first_name'],
+                             l_name=form.data['last_name'],
+                             email=form.data['email'],
+                             password=form.data['password'])
         db.session.add(user)
         db.session.commit()
         login_user(user)
