@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block title%}{{pantry.name}} - {{current_user.first_name}} {{current_user.last_name}}{% endblock %}
+
+{% block contents %}
+<h1>{{pantry.name}}</h1>
+<div>
+    <h3>Ingredients</h3>
+    <ul>
+        {% for i in pantry.ingredients %}
+            <li>{{ingredient.name}} <a href="{{url_for()}}">&#10005;</a></li>
+        {% endfor %}
+    </ul>
+</div>
+<!-- <div>
+    <h3>Recipes</h3>
+    {% for rec in current_user.saved_recipes %}
+        <a href="">{{rec.name}}</a>
+    {% endfor %}
+    <a href="">Add Recipe!</a>
+</div> -->
+
+{% endblock %}

@@ -7,7 +7,7 @@
 <div>
     <h3>Pantries</h3>
     {% for pantry in current_user.pantries %}
-        <a href="">{{pantry.name}}</a>
+        <a href="{{url_for('view_pantry',p_id=pantry.id)}}">{{pantry.name}}</a>
     {% endfor %}
     <a href="{{url_for('new_pantry')}}">New Pantry</a>
 </div>

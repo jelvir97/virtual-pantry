@@ -29,10 +29,12 @@ def load_user(user_id):
 @app.route('/')
 @login_required
 def home():
+    """Renders home dashboard"""
     return render_template('home.html')
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+    """logs in user"""
     if current_user.is_authenticated:
         return redirect(url_for('home'))
     # Here we use a class of some kind to represent and validate our
@@ -59,7 +61,6 @@ def signup():
         return redirect(url_for('home'))
     form = RegisterForm()
     if form.validate_on_submit():
-        print('************')
         user = User.register(f_name=form.data['first_name'],
                              l_name=form.data['last_name'],
                              email=form.data['email'],
@@ -80,7 +81,7 @@ def logout():
     print(current_user)
     return redirect(url_for('signup'))
 
-@app.route('/new-pantry', methods=['GET','POST'])
+@app.route('/pantry/new', methods=['GET','POST'])
 @login_required
 def new_pantry():
     """adding new pantry form"""
@@ -93,3 +94,10 @@ def new_pantry():
         return(url_for('home'))
         
     return render_template('new_pantry.html', form = form)
+
+
+@app.route('/pantry/<int:p_id>')
+@login_required
+def view_pantry(p_id):
+    pantry = Pantry.query.get(p_id)
+    return render_template('pantry.html',pantry=pantry)
