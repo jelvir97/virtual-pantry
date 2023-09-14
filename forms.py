@@ -23,6 +23,10 @@ class RegisterForm(ModelForm):
         model = User
         exclude = ['img_url']
     email = EmailField(validators=[DataRequired()])
+
+class PantryForm(ModelForm):
+    class Meta:
+        model = Pantry
     
     
 
