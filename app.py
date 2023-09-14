@@ -86,6 +86,10 @@ def new_pantry():
     """adding new pantry form"""
     form = PantryForm()
 
-    # if form.validate_on_submit():
+    if form.validate_on_submit():
+        p = Pantry(name=form.data['name'],type=form.data['type'],user_id=int(current_user.id))
+        db.session.add(p)
+        db.session.commit() 
+        return(url_for('home'))
         
     return render_template('new_pantry.html', form = form)
