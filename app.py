@@ -3,7 +3,7 @@ from flask import Flask, render_template,flash,get_flashed_messages, request,ses
 from flask_debugtoolbar import DebugToolbarExtension
 from models import connect_db, db, Ingredient, Recipe, Category, Pantry, User
 from flask_login import LoginManager,login_required, login_user,logout_user, current_user
-from forms import LoginForm, RegisterForm
+from forms import LoginForm, RegisterForm, PantryForm
 
 
 app = Flask(__name__)
@@ -79,3 +79,13 @@ def logout():
     logout_user()
     print(current_user)
     return redirect(url_for('signup'))
+
+@app.route('/new-pantry', methods=['GET','POST'])
+@login_required
+def new_pantry():
+    """adding new pantry form"""
+    form = PantryForm()
+
+    # if form.validate_on_submit():
+        
+    return render_template('new_pantry.html', form = form)
