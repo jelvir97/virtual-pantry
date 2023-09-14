@@ -2,9 +2,8 @@ import flask
 from flask import Flask, render_template,flash,get_flashed_messages, request,session, redirect,url_for
 from flask_debugtoolbar import DebugToolbarExtension
 from models import connect_db, db, Ingredient, Recipe, Category, Pantry, User
-from flask_login import LoginManager,login_required
+from flask_login import LoginManager,login_required, login_user,logout_user, current_user
 from forms import LoginForm, RegisterForm
-from flask_login import login_user
 
 
 app = Flask(__name__)
@@ -30,31 +29,33 @@ def load_user(user_id):
 @app.route('/')
 @login_required
 def home():
-    return 'Welcome'
+    return f'{current_user.first_name}'
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    if User.is_authenticated:
+    if current_user.is_authenticated:
         return redirect(url_for('home'))
     # Here we use a class of some kind to represent and validate our
     # client-side form data. For example, WTForms is a library that will
     # handle this for us, and we use a custom LoginForm to validate.
     form = LoginForm()
     if form.validate_on_submit():
-        user = User.authenticate(email=form.data.email,password=form.data.password)
+        user = User.authenticate(email=form.data['email'],pwd=form.data['password'])
         # Login and validate the user.
         # user should be an instance of your `User` class
         login_user(user)
 
+        next = flask.request.args.get('next')
+
         flask.flash('Logged in successfully.')
 
-        return flask.redirect(url_for('home'))
+        return flask.redirect(next or url_for('home'))
     return flask.render_template('login.html', form=form)
 
 @app.route('/signup', methods=['GET','POST'])
 def signup():
     """Registers new user and adds them to db"""
-    if User.is_authenticated:
+    if current_user.is_authenticated:
         return redirect(url_for('home'))
     form = RegisterForm()
     if form.validate_on_submit():
@@ -72,3 +73,9 @@ def signup():
 
     return render_template('signup.html',form=form)
     
+@app.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    print(current_user)
+    return redirect(url_for('signup'))
