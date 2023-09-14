@@ -121,4 +121,11 @@ def add_ing(p_id,name):
 def list_ingredients(id):
     p = Pantry.query.get(id)
     return p.ingredients_json()
-    
+
+@app.route('/pantry/<int:p_id>/ingredient/<int:i_id>/remove', methods=["POST"])
+def pantry_ingredient_remove(p_id,i_id):
+    p =  Pantry.query.get(p_id)
+    i = Ingredient.query.get(i_id)
+    p.ingredients.remove(i)
+    db.session.commit()
+    return redirect(url_for('view_pantry',p_id=p_id))

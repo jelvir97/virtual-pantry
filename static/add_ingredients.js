@@ -58,10 +58,12 @@ async function updateIngredientsList(){
 	for(let x in resp.data){
 		console.log(typeof resp.data[x])
 		ing= resp.data[x]
-		$ingredient = $(`<li>
-							${ing['name']}
-							<a href="/pantry/ingredient/${ing['id']}/remove">&#10005;</a>
-						</li>`)
+		$ingredient = $(`
+						<li>${ing['name']} 
+                			<form action="/pantry/${p_id}/ingredient/${ing['id']}/remove" method="post">
+                    			<button type="submit">&#10005;</button>
+                			</form>
+            			</li>`)
 		
 		$ingList.append($ingredient)				
 	}
