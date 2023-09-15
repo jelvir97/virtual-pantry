@@ -91,7 +91,7 @@ def new_pantry():
         p = Pantry(name=form.data['name'],type=form.data['type'],user_id=int(current_user.id))
         db.session.add(p)
         db.session.commit() 
-        return(url_for('home'))
+        return redirect(url_for('view_pantry',p_id=p.id))
         
     return render_template('new_pantry.html', form = form)
 
