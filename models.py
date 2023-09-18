@@ -66,6 +66,26 @@ class Recipe(db.Model):
                          db.ForeignKey('categories.id'),
                          nullable=False,
                          info={'label': 'Category'})
+    
+    @classmethod
+    def add_from_api(cls, m):
+        """Receives meal data from api and adds as Recipe to db"""
+        measurements = [ m[k] for k in m.keys() if 'strMeasure' in k and m[k] != ' ']
+        ings = [ m[k] for k in m.keys() if 'strIngredient' in k and m[k]]
+        cat = Category.query.filter_by(name=m['strCategory']).one()
+        newRec = cls(name=m['strMeal'], image=m['strMealThumb'], instructions=m['strInstructions'],measurements=measurements,category=cat.id)
+        db.session.add(newRec)
+        db.session.commit()
+
+        for ing in ings:
+            i = Ingredient.query.filter_by(name=ing).one()
+            newRec.ingredients.append(i)
+        
+        db.session.commit()
+
+        return newRec
+        
+        
 
 class IngredientRecipe(db.Model):
     """Many-to-many relationship between ingredients and recipes"""
