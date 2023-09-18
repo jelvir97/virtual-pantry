@@ -74,13 +74,16 @@ def signup():
 
     return render_template('signup.html',form=form)
     
-@app.route('/logout')
+@app.route('/logout', methods=["POST"])
 @login_required
 def logout():
     logout_user()
     print(current_user)
     return redirect(url_for('signup'))
 
+# 
+# Pantry - Ingredient Views
+# 
 @app.route('/pantry/new', methods=['GET','POST'])
 @login_required
 def new_pantry():
@@ -129,3 +132,9 @@ def pantry_ingredient_remove(p_id,i_id):
     p.ingredients.remove(i)
     db.session.commit()
     return redirect(url_for('view_pantry',p_id=p_id))
+
+# 
+# Recipe Views
+# 
+
+# @app.route('/recipe')
