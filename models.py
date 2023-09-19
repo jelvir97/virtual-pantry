@@ -41,11 +41,14 @@ class Recipe(db.Model):
 
     __tablename__= "recipes"
 
+    def __repr__(slf):
+        return f"<R: {slf.name} {slf.id}>"
+
     id = db.Column(db.Integer,
                    primary_key=True,
                    autoincrement=True)
     
-    name = db.Column(db.String(50),
+    name = db.Column(db.String(),
                      nullable=False,
                      info={'label': 'Recipe Name'})
     
@@ -73,7 +76,7 @@ class Recipe(db.Model):
         measurements = [ m[k] for k in m.keys() if 'strMeasure' in k and m[k] != ' ']
         ings = [ m[k] for k in m.keys() if 'strIngredient' in k and m[k]]
         cat = Category.query.filter_by(name=m['strCategory']).one()
-        newRec = cls(name=m['strMeal'], image=m['strMealThumb'], instructions=m['strInstructions'],measurements=measurements,category=cat.id)
+        newRec = cls(name=m['strMeal'], image=m['strMealThumb'], instructions=m['strInstructions'],measurements=cls.ingredient_list(measurements,ings),category=cat.id)
         db.session.add(newRec)
         db.session.commit()
 
@@ -84,6 +87,14 @@ class Recipe(db.Model):
         db.session.commit()
 
         return newRec
+    
+    @classmethod
+    def ingredient_list(cls,ms,ings):
+        """Makes list of concatenated ingredient/measurement pairs"""
+
+        i_m_list = [ings[x] + ' ' + ms[x] for x in range(0,len(ings))]
+
+        return i_m_list
         
         
 
