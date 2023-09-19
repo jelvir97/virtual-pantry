@@ -4,7 +4,7 @@ from flask_debugtoolbar import DebugToolbarExtension
 from models import connect_db, db, Ingredient, Recipe, Category, Pantry, User
 from flask_login import LoginManager,login_required, login_user,logout_user, current_user
 from forms import LoginForm, RegisterForm, PantryForm
-
+import requests
 
 app = Flask(__name__)
 
@@ -30,7 +30,8 @@ def load_user(user_id):
 @login_required
 def home():
     """Renders home dashboard"""
-    return render_template('home.html')
+    rec = rand_recipe()
+    return render_template('home.html',rec=rec)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -137,4 +138,32 @@ def pantry_ingredient_remove(p_id,i_id):
 # Recipe Views
 # 
 
-# @app.route('/recipe')
+# Recipe Helper functions
+def rand_recipe():
+    resp = requests.get('https://www.themealdb.com/api/json/v1/1/random.php?')
+    m = resp.json()['meals'][0]
+    r = Recipe.add_from_api(m)
+    return r
+
+@app.route('/recipe/<int:id>')
+@login_required
+def view_recipe(id):
+    r = Recipe.query.get(id)
+    cat = Category.query.get(r.category)
+    return render_template('recipe.html',rec=r,cat=cat)
+
+@app.route('/recipe/<int:id>/add', methods=['POST'])
+def save_recipe(id):
+    r = Recipe.query.get(id)
+    current_user.saved_recipes.append(r)
+    db.session.commit()
+    flash('Recipe saved!')
+    return redirect(url_for('view_recipe',id=r.id)) 
+
+@app.route('/recipe/<int:id>/remove', methods=['POST'])
+def unsave_recipe(id):
+    r = Recipe.query.get(id)
+    current_user.saved_recipes.remove(r)
+    db.session.commit()
+    flash('Recipe unsaved!')
+    return redirect(url_for('view_recipe',id=r.id)) 

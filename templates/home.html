@@ -13,10 +13,14 @@
 </div>
 <div>
     <h3>Recipes</h3>
-    {% for rec in current_user.saved_recipes %}
-        <a href="">{{rec.name}}</a>
+    {% for r in current_user.saved_recipes %}
+        <a href="{{url_for('view_recipe',id=r.id)}}">{{r.name}}</a>
     {% endfor %}
     <a href="">Add Recipe!</a>
+    <div>
+        <h4><a href="{{url_for('view_recipe',id=rec.id)}}">{{rec.name}}</a></h4>
+        <img src="{{rec.image}}" alt="">
+    </div>
 </div>
 
 {% endblock %}

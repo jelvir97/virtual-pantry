@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block title%}Recipe - {{rec.name}} {% endblock %}
+
+{% block contents %}
+    <h1>{{rec.name}}</h1>
+    <h2>{{cat.name}}</h2>
+
+    {% if rec not in current_user.saved_recipes %}
+        <form action="{{url_for('save_recipe',id=rec.id)}}" method="post">
+            <button type="submit">Save Recipe!</button>
+        </form>
+    {% else %}
+        <form action="{{url_for('unsave_recipe',id=rec.id)}}" method="post">
+            <button type="submit">Unsave Recipe</button>
+        </form>
+
+    {% endif %}
+    <img src="{{rec.image}}" alt="">
+
+
+    <h3>Ingredients</h3>
+    <ul>
+        {% for i in rec.measurements%}
+            <li>{{i}}</li>
+        {% endfor %}
+    </ul>
+
+    <h3>Instructions</h3>
+    <p>{{rec.instructions}}</p>
+    
+{% endblock %}
