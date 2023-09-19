@@ -4,6 +4,7 @@ from flask_login import UserMixin
 from flask_bcrypt import Bcrypt
 from sqlalchemy_utils import EmailType, URLType
 from wtforms import PasswordField
+import sqlalchemy
 # from psycopg2.errors import UniqueViolation
 # from sqlalchemy.exc import IntegrityError
 
@@ -81,9 +82,15 @@ class Recipe(db.Model):
         db.session.commit()
 
         for ing in ings:
-            i = Ingredient.query.filter_by(name=ing).one()
+            try:
+                i = Ingredient.query.filter_by(name=ing).one()
+
+            except sqlalchemy.exc.NoResultFound:
+                i = Ingredient(name=ing)
+                db.session.add(i)
+                db.session.commit()
+
             newRec.ingredients.append(i)
-        
         db.session.commit()
 
         return newRec
