@@ -139,9 +139,6 @@ def pantry_ingredient_remove(p_id,i_id):
     db.session.commit()
     return redirect(url_for('view_pantry',p_id=p_id))
 
-# 
-# Recipe Views
-# 
 
 # Recipe Helper functions
 def rand_recipe():
@@ -150,15 +147,21 @@ def rand_recipe():
     r = Recipe.add_from_api(m)
     return r
 
+# 
+# Recipe Views
+# 
+
 @app.route('/recipe/<int:id>')
 @login_required
 def view_recipe(id):
+    """Renders view page for single recipe"""
     r = Recipe.query.get(id)
     cat = Category.query.get(r.category)
     return render_template('recipe.html',rec=r,cat=cat)
 
 @app.route('/recipe/<int:id>/add', methods=['POST'])
 def save_recipe(id):
+    """Post method to add recipe to user's saved_recipes"""
     r = Recipe.query.get(id)
     current_user.saved_recipes.append(r)
     db.session.commit()
@@ -167,6 +170,7 @@ def save_recipe(id):
 
 @app.route('/recipe/<int:id>/remove', methods=['POST'])
 def unsave_recipe(id):
+    """Removing recipes from user's saved_recipes"""
     r = Recipe.query.get(id)
     current_user.saved_recipes.remove(r)
     db.session.commit()
@@ -175,6 +179,7 @@ def unsave_recipe(id):
 
 @app.route('/recipe/new',methods=['GET','POST'])
 def new_user_recipe():
+    """Renders/Handles new recipe form"""
     form = RecipeForm()
     if form.validate_on_submit():
         print(form)
