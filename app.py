@@ -171,8 +171,10 @@ def unsave_recipe(id):
 @app.route('/recipe/new',methods=['GET','POST'])
 def new_user_recipe():
     form = RecipeForm()
-    # raise
     if form.validate_on_submit():
         print(form)
-        raise
+        rec = Recipe.add_user_recipe(form.data)
+        current_user.saved_recipes.append(rec)
+        db.session.commit()
+        return redirect(url_for('home'))
     return render_template('new_recipe.html',form=form)

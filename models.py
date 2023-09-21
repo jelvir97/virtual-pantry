@@ -69,7 +69,21 @@ class Recipe(db.Model):
     category = db.Column(db.Integer,
                          db.ForeignKey('categories.id'),
                          nullable=False,
-                         info={'label': 'Category'})
+                         info={'label': 'Category',
+                               'choices': [(1,'Beef'),
+                                           (2,'Breakfast'),
+                                           (3,'Chicken'),
+                                           (4,'Dessert'),
+                                           (5,'Goat'),
+                                           (6,'Lamb'),
+                                           (7,'Misc'),
+                                           (8,'Pasta'),
+                                           (9,'Pork'),
+                                           (10,'Seafood'),
+                                           (11,'Side'),
+                                           (12,'Starter'),
+                                           (13,'Vegan'),
+                                           (14,'Vegetarian')]})
     
     @classmethod
     def add_from_api(cls, m):
@@ -81,6 +95,11 @@ class Recipe(db.Model):
         db.session.add(newRec)
         db.session.commit()
 
+        newRec.add_ingredients(ings)
+
+        return newRec
+    
+    def add_ingredients(slf, ings):
         for ing in ings:
             try:
                 i = Ingredient.query.filter_by(name=ing).one()
@@ -90,11 +109,9 @@ class Recipe(db.Model):
                 db.session.add(i)
                 db.session.commit()
 
-            newRec.ingredients.append(i)
+            slf.ingredients.append(i)
         db.session.commit()
 
-        return newRec
-    
     @classmethod
     def ingredient_list(cls,ms,ings):
         """Makes list of concatenated ingredient/measurement pairs"""
@@ -102,6 +119,29 @@ class Recipe(db.Model):
         i_m_list = [ings[x] + ' ' + ms[x] for x in range(0,len(ings))]
 
         return i_m_list
+    
+    @classmethod
+    def add_user_recipe(cls, data):
+        name = data['name']
+        instructions = data['instructions']
+        image = data['image']
+        category= int(data['category'])
+        ings = []
+        ms = []
+        for i in data['ingredients']:
+            if i['ing']:
+                ms.append(str(i['amount']) + ' ' + i['measurement'])
+                ings.append(i['ing'].capitalize())
+        
+        measurements = cls.ingredient_list(ms,ings)
+
+        newRec = cls(name=name,instructions=instructions,image=image,measurements=measurements,category=category)
+        db.session.add(newRec)
+        db.session.commit()
+
+        newRec.add_ingredients(ings)
+
+        return newRec
         
         
 

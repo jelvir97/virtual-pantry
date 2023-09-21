@@ -1,8 +1,8 @@
 from flask_wtf import FlaskForm
 from wtforms_alchemy import model_form_factory
-from models import db, User, Recipe, Ingredient, Pantry,Category
 from wtforms import EmailField, StringField, FloatField, SelectField,FormField,FieldList
 from wtforms.validators import DataRequired, Optional
+from models import db, User, Recipe, Ingredient, Pantry, Category
 
 BaseModelForm = model_form_factory(FlaskForm)
 
@@ -47,12 +47,12 @@ class RecIngForm(FlaskForm):
     ing = StringField('Ingredient:')
     amount = FloatField('Amount:')
     measurement = SelectField('Measurement:', choices=measurement_choices)
-    
+     
 # cats = [(c.id,c.name) for c in Category.query.all()]   
 class RecipeForm(ModelForm):
     class Meta:
         model = Recipe
         exclude = ['measurements']
-
+        include_foreign_keys = True
     ingredients = FieldList(FormField(RecIngForm), min_entries=1, validators=[Optional()])
 

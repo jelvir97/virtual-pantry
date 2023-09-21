@@ -6,7 +6,7 @@ function handleAddIngField(evt){
     $currField = $(evt.target).parent()
     $currField.next().show()
     $(evt.target).hide()
-    // $(evt.target).next()
+    
     $currField.next().children('#add-ing-field').on('click',handleAddIngField)
     $currField.next().children('#remove-ing-field').on('click',handleRemoveIngField)
 
@@ -20,9 +20,7 @@ function handleRemoveIngField(evt){
     evt.preventDefault()
     $currField = $(evt.target).parent()
     $inputs = $currField.find('input')
-    // console.log($currField.find('input'))
     for(i of $inputs){
-        console.log(i)
         i.value = ''
     }
 
