@@ -5,6 +5,7 @@ from models import connect_db, db, Ingredient, Recipe, Category, Pantry, User
 from flask_login import LoginManager,login_required, login_user,logout_user, current_user
 from forms import LoginForm, RegisterForm, PantryForm, RecipeForm
 import requests
+from  sqlalchemy.sql.expression import func
 
 app = Flask(__name__)
 
@@ -30,7 +31,11 @@ def load_user(user_id):
 @login_required
 def home():
     """Renders home dashboard"""
-    rec = rand_recipe()
+    try:
+        rec = rand_recipe()
+    except:
+        db.session.rollback()
+        rec = Recipe.query.order_by(func.random()).first()
     return render_template('home.html',rec=rec)
 
 @app.route('/login', methods=['GET', 'POST'])
