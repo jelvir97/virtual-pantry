@@ -80,6 +80,11 @@ def signup():
 
     return render_template('signup.html',form=form)
     
+@app.route('/profile')
+@login_required
+def user_profile():
+    return render_template('user_profile.html')
+
 @app.route('/logout', methods=["POST"])
 @login_required
 def logout():

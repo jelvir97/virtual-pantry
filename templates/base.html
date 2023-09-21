@@ -12,6 +12,7 @@
             <h3>Virtual Pantry</h3>
             {% if current_user.is_authenticated %}
                 <a href="{{url_for('home')}}">Home</a>
+                <a href="{{url_for('user_profile')}}">Profile</a>
             {% endif %}
         </div>
         <div>
