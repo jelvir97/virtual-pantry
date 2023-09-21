@@ -3,7 +3,7 @@ from flask import Flask, render_template,flash,get_flashed_messages, request,ses
 from flask_debugtoolbar import DebugToolbarExtension
 from models import connect_db, db, Ingredient, Recipe, Category, Pantry, User
 from flask_login import LoginManager,login_required, login_user,logout_user, current_user
-from forms import LoginForm, RegisterForm, PantryForm
+from forms import LoginForm, RegisterForm, PantryForm, RecipeForm
 import requests
 
 app = Flask(__name__)
@@ -167,3 +167,12 @@ def unsave_recipe(id):
     db.session.commit()
     flash('Recipe unsaved!')
     return redirect(url_for('view_recipe',id=r.id)) 
+
+@app.route('/recipe/new',methods=['GET','POST'])
+def new_user_recipe():
+    form = RecipeForm()
+    # raise
+    if form.validate_on_submit():
+        print(form)
+        raise
+    return render_template('new_recipe.html',form=form)

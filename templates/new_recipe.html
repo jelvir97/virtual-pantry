@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block title %}New Recipe{% endblock %}
+
+
+{% block contents %}
+
+<h2>Add New Pantry</h2>
+    <form action="{{ url_for('new_user_recipe') }}" method="POST">
+        {{ form.hidden_tag() }}
+        {% for field in form
+            if field.widget.input_type != 'hidden' and field.type != "FieldList" %}
+        <div>
+            <fieldset>
+                {{field.label}}
+                {{field}}
+                {% if field.type == "FieldList"%}
+                    <button id="add-ing-field">+</button>
+                {% endif %}
+            </fieldset>
+        </div>
+
+            {% for error in field.errors %}
+                {{ error }}
+            {% endfor %}
+        {% endfor %}
+        <div>
+            <fieldset id="ing-wrapper">
+                {{form.ingredients.label}}              
+                <fieldset class="ing-field">      
+                    {{form.ingredients.append_entry()}}
+                    <button id="add-ing-field">+</button>  
+                </fieldset>
+                {% for x in range(0,17) %}
+                <fieldset hidden class="ing-field">  
+                        {{form.ingredients.append_entry()}}
+                        <button id="add-ing-field">+</button>
+                        <button id="remove-ing-field">-</button>
+                </fieldset>
+                {% endfor %}
+
+            </fieldset>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+{% endblock %}
+
+{% block script %}
+    <script src="https://code.jquery.com/jquery-3.2.1.js"></script>
+    <script src="../static/new_recipe.js"></script>
+{% endblock %}

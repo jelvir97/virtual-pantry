@@ -28,7 +28,7 @@
     </div>
     {% endfor %}
     
-    <a href="">Add Recipe!</a>
+    <a href="{{url_for('new_user_recipe')}}">Add Recipe!</a>
     <div>
         <h4><a href="{{url_for('view_recipe',id=rec.id)}}">{{rec.name}}</a></h4>
         {% if rec not in current_user.saved_recipes %}
