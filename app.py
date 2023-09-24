@@ -3,7 +3,7 @@ from flask import Flask, render_template,flash,get_flashed_messages, request,ses
 from flask_debugtoolbar import DebugToolbarExtension
 from models import connect_db, db, Ingredient, Recipe, Category, Pantry, User
 from flask_login import LoginManager,login_required, login_user,logout_user, current_user
-from forms import LoginForm, RegisterForm, PantryForm, RecipeForm
+from forms import LoginForm, RegisterForm, PantryForm, RecipeForm, UserUpdateForm
 import requests
 from  sqlalchemy.sql.expression import func
 
@@ -85,6 +85,22 @@ def signup():
 def user_profile():
     return render_template('user_profile.html')
 
+@app.route('/profile/update',methods=['GET'])
+@login_required
+def user_profile_update():
+    form = UserUpdateForm(obj=current_user)
+    return render_template('user_update.html',form=form)
+
+@app.route('/profile/update',methods=['POST'])
+@login_required
+def submit_user_update():
+    form = UserUpdateForm()
+    if form.validate_on_submit():
+        form.populate_obj(current_user)
+        db.session.commit()
+        return redirect(url_for('user_profile'))
+    return redirect(url_for('user_profile_update'))
+
 @app.route('/logout', methods=["POST"])
 @login_required
 def logout():
@@ -100,7 +116,6 @@ def logout():
 def new_pantry():
     """adding new pantry form"""
     form = PantryForm()
-
     if form.validate_on_submit():
         p = Pantry(name=form.data['name'],type=form.data['type'],user_id=int(current_user.id))
         db.session.add(p)

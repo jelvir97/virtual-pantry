@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block title %}Update Profile{% endblock %}
+
+
+{% block contents %}
+
+<h1>{{current_user.first_name}} {{current_user.last_name}}'s Profile</h1>
+
+    <form action="{{ url_for('submit_user_update') }}" method="post">
+        {{ form.hidden_tag() }}
+        {{ form.csrf_token }}
+        {% for field in form
+            if field.widget.input_type != 'hidden' %}
+        <div>
+            <fieldset>
+                {{field.label}}
+                {{field}}
+            </fieldset>
+        </div>
+
+            {% for error in field.errors %}
+                {{ error }}
+            {% endfor %}
+        {% endfor %}
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+{% endblock %}

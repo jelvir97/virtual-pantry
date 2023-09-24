@@ -24,6 +24,12 @@ class RegisterForm(ModelForm):
         exclude = ['img_url']
     email = EmailField(validators=[DataRequired()])
 
+class UserUpdateForm(ModelForm):
+    class Meta:
+        model = User
+        only = ['first_name','last_name','img_url']
+
+
 class PantryForm(ModelForm):
     class Meta:
         model = Pantry
