@@ -167,6 +167,11 @@ def rand_recipe():
     r = Recipe.add_from_api(m)
     return r
 
+def recipe_by_ing(ing):
+    resp = requests.get(f'https://www.themealdb.com/api/json/v1/1/filter.php?i={ing}')
+    m = resp.json('meals')[0]
+    r = Recipe.add_from_api(m)
+    return r
 # 
 # Recipe Views
 # 
