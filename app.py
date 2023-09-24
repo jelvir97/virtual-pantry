@@ -167,9 +167,14 @@ def rand_recipe():
     r = Recipe.add_from_api(m)
     return r
 
-def recipe_by_ing(ing):
+def recipes_by_ing(ing):
     resp = requests.get(f'https://www.themealdb.com/api/json/v1/1/filter.php?i={ing}')
-    m = resp.json('meals')[0]
+    meals = resp.json()['meals']
+    return meals
+
+def recipe_by_id(id):
+    resp = requests.get(f'https://www.themealdb.com/api/json/v1/1/lookup.php?i={id}')
+    m = resp.json()['meals'][0]
     r = Recipe.add_from_api(m)
     return r
 # 
@@ -213,3 +218,15 @@ def new_user_recipe():
         db.session.commit()
         return redirect(url_for('home'))
     return render_template('new_recipe.html',form=form)
+
+@app.route('/recipe/search/<ing>')
+@login_required
+def recipe_search(ing):
+    recipes = recipes_by_ing(ing)
+    return render_template('list_recipes.html',recipes=recipes,ing=ing)
+
+@app.route('/recipe/search/api/<int:id>')
+@login_required
+def recipe_search_id(id):
+    rec = recipe_by_id(id)
+    return redirect(url_for('view_recipe',id=rec.id))

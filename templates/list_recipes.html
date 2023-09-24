@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block title %}Search - {{ing}}{% endblock %}
+
+{% block contents %}
+    <h1>Search Recipes by Ingredients - {{ing}}</h1>
+    <div id="search-recipe-container">
+        {% for r in recipes %}
+            <div>
+                <a href="{{url_for('recipe_search_id',id=r['idMeal'])}}">{{r['strMeal']}}</a>
+                <img src="{{r['strMealThumb'] + '/preview'}}" alt="">
+            </div>
+        {% endfor%}
+    </div>
+{% endblock %}
