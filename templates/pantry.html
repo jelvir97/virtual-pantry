@@ -8,7 +8,7 @@
     <h3>Ingredients</h3>
     <ul id="ing-list">
         {% for i in pantry.ingredients %}
-            <li>{{i.name}} 
+            <li><a href="{{url_for('recipe_search',ing=i.name)}}">{{i.name}}</a>
                 <form action="{{url_for('pantry_ingredient_remove', p_id=pantry.id,i_id=i.id)}}" method="post">
                     <button type="submit">&#10005;</button>
                 </form>

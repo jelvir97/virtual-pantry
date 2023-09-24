@@ -59,7 +59,8 @@ async function updateIngredientsList(){
 		console.log(typeof resp.data[x])
 		ing= resp.data[x]
 		$ingredient = $(`
-						<li>${ing['name']} 
+						<li>
+						<a href="/recipe/search/${ing['name']}">${ing['name']}</a> 
                 			<form action="/pantry/${p_id}/ingredient/${ing['id']}/remove" method="post">
                     			<button type="submit">&#10005;</button>
                 			</form>
