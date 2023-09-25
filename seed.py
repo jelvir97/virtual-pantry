@@ -25,3 +25,20 @@ for cat in cats:
     db.session.add(category)
 
 db.session.commit() 
+
+def seed_test_db():
+    r = requests.get('https://www.themealdb.com/api/json/v1/1/list.php?i=list')
+    ing = r.json()['meals']
+
+    for i in ing:
+        ingredient = Ingredient(name=i['strIngredient'])
+        db.session.add(ingredient)
+
+    r2 = requests.get('https://www.themealdb.com/api/json/v1/1/list.php?c=list')
+    cats = r2.json()['meals']
+
+    for cat in cats:
+        category = Category(name=cat['strCategory'])
+        db.session.add(category)
+
+    db.session.commit() 
