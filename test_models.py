@@ -8,7 +8,7 @@
 import os
 from unittest import TestCase
 
-from models import db, User, Ingredient, Recipe, Category, Pantry
+from models import db, User, Ingredient, Recipe, Category, Pantry,IngredientPantry,IngredientRecipe
 from sqlalchemy.exc import IntegrityError
 
 # BEFORE we import our app, let's set an environmental variable
@@ -36,9 +36,11 @@ class ModelTestCase(TestCase):
     def setUp(self):
         """Clearing db for tests"""
         db.session.rollback()
+        IngredientPantry.query.delete()
+        IngredientRecipe.query.delete()
+        Ingredient.query.delete()
         Pantry.query.delete()
         User.query.delete()
-        Ingredient.query.delete()
         Recipe.query.delete()
         Category.query.delete()
 
@@ -123,4 +125,29 @@ class ModelTestCase(TestCase):
 
         self.assertEqual(len(u.pantries),1)
         self.assertEqual(p.user_id,u.id)
-    
+
+    def test_pantry_ingredient(self):
+        """Testing relationship between pantries and ingredients"""
+        u = User.register(
+            email="test@test.com",
+            first_name="test",
+            last_name="user",
+            password="HASHED_PASSWORD"
+        )
+
+        db.session.add(u)
+        db.session.commit()
+
+        p = Pantry(name='Fridge',type='fridge',user_id=u.id)
+        db.session.add(p)
+        db.session.commit()
+
+        i = Ingredient(name='testIng')
+        db.session.add(i)
+        db.session.commit()
+        
+        p.add_ingredients(i.id)
+        db.session.commit()
+
+        self.assertEqual(len(p.ingredients),1)
+        self.assertEqual(len(i.pantries),1)
