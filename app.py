@@ -105,7 +105,6 @@ def submit_user_update():
 @login_required
 def logout():
     logout_user()
-    print(current_user)
     return redirect(url_for('signup'))
 
 # 

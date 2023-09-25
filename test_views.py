@@ -11,6 +11,7 @@ from unittest import TestCase
 from models import db, User, Ingredient, Recipe, Category, Pantry, IngredientPantry,IngredientRecipe
 from sqlalchemy.exc import IntegrityError
 import seed
+from flask_login import FlaskLoginClient
 
 # BEFORE we import our app, let's set an environmental variable
 # to use a different database for tests (we need to do this
@@ -27,7 +28,7 @@ from app import app
 # Create our tables (we do this here, so we only create the tables
 # once for all tests --- in each test, we'll delete the data
 # and create fresh new clean test data
-
+app.test_client_class = FlaskLoginClient
 db.drop_all()
 db.create_all()
 
@@ -51,6 +52,7 @@ class ModelTestCase(TestCase):
 
         self.client = app.test_client()
 
+        seed.seed_test_db()
         self.testuser = User.register(
             email="test@test.com",
             first_name="test",
@@ -60,17 +62,28 @@ class ModelTestCase(TestCase):
         db.session.add(self.testuser)
         db.session.commit()
 
-        seed.seed_test_db()
 
-    def test_user_signup(self):
-        """Test User Signup"""
-        with self.client as c:
-            resp = c.post('/signup', data={'email':"test2@test2.com",
-                'first_name':"test2",
-                'last_name':"user2",
-                'password':"HASHED_PASSWORD"},
-                follow_redirects=True)
-            self.assertEqual(resp.status_code, 200)
-            self.assertIn("Pantries",resp.text)
+    def test_home_page(self):
+        self.testuser = User.query.first()
+        with app.test_client(user=self.testuser) as c:
 
+            resp = c.get("/")
 
+            self.assertEqual(resp.status_code,200)
+            self.assertIn('New Pantry',resp.text)
+
+    def test_new_pantry_form(self):
+        self.testuser = User.query.first()
+        with app.test_client(user=self.testuser) as c:
+            resp = c.get('/pantry/new')
+            
+            self.assertEqual(resp.status_code,200)
+            self.assertIn('Type',resp.text)
+
+    def test_new_recipe_form(self):
+        self.testuser = User.query.first()
+        with app.test_client(user=self.testuser) as c:
+            resp = c.get('/recipe/new')
+            
+            self.assertEqual(resp.status_code,200)
+            self.assertIn('Ingredients',resp.text)
