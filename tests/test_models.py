@@ -36,11 +36,11 @@ class ModelTestCase(TestCase):
     def setUp(self):
         """Clearing db for tests"""
         db.session.rollback()
+        Pantry.query.delete()
         User.query.delete()
         Ingredient.query.delete()
         Recipe.query.delete()
         Category.query.delete()
-        Pantry.query.delete()
 
         self.client = app.test_client()
 
@@ -101,4 +101,22 @@ class ModelTestCase(TestCase):
         db.session.commit()
 
         self.assertEqual(len(Ingredient.query.all()),3)
+
+    def test_pantry_model(self):
+        u = User.register(
+            email="test@test.com",
+            first_name="test",
+            last_name="user",
+            password="HASHED_PASSWORD"
+        )
+
+        db.session.add(u)
+        db.session.commit()
+
+        p = Pantry(name='Fridge',type='fridge',user_id=u.id)
+        db.session.add(p)
+        db.session.commit()
+
+        self.assertEqual(len(u.pantries),1)
+        self.assertEqual(p.user_id,u.id)
     
