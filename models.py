@@ -268,13 +268,13 @@ class User(db.Model, UserMixin):
     saved_recipes = db.relationship('Recipe', secondary='user_recipe',backref='user')
 
     @classmethod
-    def register(cls, f_name, l_name, email, password):
+    def register(cls, first_name, last_name, email, password):
         """Register user w/hashed password & return user."""
 
         pw_hash = bcrypt.generate_password_hash(password).decode('utf-8')
         try:
-            new_user = User(first_name=f_name, 
-                            last_name=l_name, 
+            new_user = User(first_name=first_name, 
+                            last_name=last_name, 
                             email=email, 
                             password=pw_hash)
         except:

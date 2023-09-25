@@ -67,8 +67,8 @@ def signup():
         return redirect(url_for('home'))
     form = RegisterForm()
     if form.validate_on_submit():
-        user = User.register(f_name=form.data['first_name'],
-                             l_name=form.data['last_name'],
+        user = User.register(first_name=form.data['first_name'],
+                             last_name=form.data['last_name'],
                              email=form.data['email'],
                              password=form.data['password'])
         db.session.add(user)
