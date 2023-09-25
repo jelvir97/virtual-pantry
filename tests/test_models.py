@@ -8,7 +8,7 @@
 import os
 from unittest import TestCase
 
-from models import db, User, Ingredient, Recipe, Category
+from models import db, User, Ingredient, Recipe, Category, Pantry
 from sqlalchemy.exc import IntegrityError
 
 # BEFORE we import our app, let's set an environmental variable
@@ -40,6 +40,7 @@ class ModelTestCase(TestCase):
         Ingredient.query.delete()
         Recipe.query.delete()
         Category.query.delete()
+        Pantry.query.delete()
 
         self.client = app.test_client()
 
@@ -73,4 +74,31 @@ class ModelTestCase(TestCase):
         self.assertNotEqual(u.password,"HASHED_PASSWORD")
         self.assertEqual(len(User.query.all()),1)
         self.assertEqual(u.first_name,'test')
+
+    def test_recipe_model(self):
+        c = Category(name='testCat')
+        db.session.add(c)
+        db.session.commit()
+
+        r = Recipe(name='testRec',
+                   instructions='test test test',
+                   category=c.id,
+                   measurements=['test','test','test'])
+        db.session.add(r)
+        db.session.commit()
+
+        self.assertEqual(len(Recipe.query.all()),1)
+        self.assertEqual(r.category,c.id)
+
+    def test_ingredients_model(self):
+        ing1 = Ingredient(name='salt')
+        ing2 = Ingredient(name='pepper')
+        ing3 = Ingredient(name='eggs')
+
+        db.session.add(ing1)
+        db.session.add(ing2)
+        db.session.add(ing3)
+        db.session.commit()
+
+        self.assertEqual(len(Ingredient.query.all()),3)
     
