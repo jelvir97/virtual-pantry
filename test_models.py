@@ -175,3 +175,21 @@ class ModelTestCase(TestCase):
         self.assertEqual(len(r.ingredients),1)
         self.assertEqual(r.ingredients[0].name,'testIng')
         
+    def test_recipe_add_ingredients(self):
+        c = Category(name='testCat')
+        db.session.add(c)
+        db.session.commit()
+
+        r = Recipe(name='testRec',
+                   instructions='test test test',
+                   category=c.id,
+                   measurements=['test','test','test'])
+        db.session.add(r)
+        db.session.commit()
+
+        ings =['salt','pepper','eggs']
+
+        r.add_ingredients(ings=ings)
+
+        self.assertEqual(len(Ingredient.query.all()),3)
+        self.assertEqual(r.ingredients[0].name,'salt')
