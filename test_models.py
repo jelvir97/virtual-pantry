@@ -151,3 +151,27 @@ class ModelTestCase(TestCase):
 
         self.assertEqual(len(p.ingredients),1)
         self.assertEqual(len(i.pantries),1)
+
+    def test_recipe_ingredient(self):
+        """Testing ingredient recipe relationship"""
+        c = Category(name='testCat')
+        db.session.add(c)
+        db.session.commit()
+
+        r = Recipe(name='testRec',
+                   instructions='test test test',
+                   category=c.id,
+                   measurements=['test','test','test'])
+        db.session.add(r)
+        db.session.commit()
+
+        i = Ingredient(name='testIng')
+        db.session.add(i)
+        db.session.commit()
+
+        r.ingredients.append(i)
+        db.session.commit()
+        
+        self.assertEqual(len(r.ingredients),1)
+        self.assertEqual(r.ingredients[0].name,'testIng')
+        
