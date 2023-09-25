@@ -8,7 +8,7 @@
 import os
 from unittest import TestCase
 
-from models import db, User, Ingredient, Recipe
+from models import db, User, Ingredient, Recipe, Category, Pantry, IngredientPantry,IngredientRecipe
 from sqlalchemy.exc import IntegrityError
 
 # BEFORE we import our app, let's set an environmental variable
@@ -36,10 +36,20 @@ class ModelTestCase(TestCase):
     def setUp(self):
         """Clearing db for tests"""
         db.session.rollback()
-        User.query.delete()
+        IngredientPantry.query.delete()
+        IngredientRecipe.query.delete()
         Ingredient.query.delete()
+        Pantry.query.delete()
+        User.query.delete()
         Recipe.query.delete()
+        Category.query.delete()
 
         self.client = app.test_client()
 
- 
+        self.testuser = User.register(
+            email="test@test.com",
+            first_name="test",
+            last_name="user",
+            password="HASHED_PASSWORD"
+        )
+        
