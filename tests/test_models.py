@@ -61,6 +61,7 @@ class ModelTestCase(TestCase):
         self.assertEqual(u.email, "test@test.com")
 
     def test_user_registration(self):
+        """Testing user registration method"""
         u = User.register(
             email="test@test.com",
             first_name="test",
@@ -76,6 +77,7 @@ class ModelTestCase(TestCase):
         self.assertEqual(u.first_name,'test')
 
     def test_recipe_model(self):
+        """Testing recipe instantiation """
         c = Category(name='testCat')
         db.session.add(c)
         db.session.commit()
@@ -91,6 +93,7 @@ class ModelTestCase(TestCase):
         self.assertEqual(r.category,c.id)
 
     def test_ingredients_model(self):
+        """Testing Ingredient instantiation"""
         ing1 = Ingredient(name='salt')
         ing2 = Ingredient(name='pepper')
         ing3 = Ingredient(name='eggs')
@@ -103,6 +106,7 @@ class ModelTestCase(TestCase):
         self.assertEqual(len(Ingredient.query.all()),3)
 
     def test_pantry_model(self):
+        """Testing Pantry Model"""
         u = User.register(
             email="test@test.com",
             first_name="test",
