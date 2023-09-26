@@ -4,7 +4,7 @@
 
 
 {% block contents %}
-
+<div class="col-l mt-4">
 <h2>Sign-Up!</h2>
 <h4>Already have an account? Log in <a href="{{url_for('login')}}">here</a>!</h4>
 
@@ -12,17 +12,20 @@
         {{ form.hidden_tag() }}
         {% for field in form
             if field.widget.input_type != 'hidden' %}
-        <div>
-            <fieldset>
-                {{field.label}}
-                {{field}}
-            </fieldset>
+        <div class="form-group">
+
+                {{field.label(class="form-label mt-4")}}
+                {{field(class="form-control")}}
+
         </div>
 
             {% for error in field.errors %}
-                {{ error }}
+                {{ error(class="form-text text-muted") }}
             {% endfor %}
         {% endfor %}
-        <button type="submit" class="btn btn-primary">Submit</button>
+        <div class="mt-4">
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
     </form>
+</div>
 {% endblock %}

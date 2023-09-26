@@ -4,25 +4,28 @@
 
 
 {% block contents %}
-
-<h2>Login!</h2>
-<h4>Don't have an account? Sign up <a href="{{url_for('signup')}}">here</a>!</h4>
-
-    <form action="{{ url_for('login') }}" method="POST">
-        {{ form.hidden_tag() }}
-        {% for field in form
-            if field.widget.input_type != 'hidden' %}
-        <div>
-            <fieldset>
-                {{field.label}}
-                {{field}}
-            </fieldset>
+    <div class="col-l mt-4">
+        <h2>Log-in!</h2>
+        <h4>Don't have an account? Sign up <a href="{{url_for('signup')}}">here</a>!</h4>
+        
+            <form action="{{ url_for('login') }}" method="POST">
+                {{ form.hidden_tag() }}
+                {% for field in form
+                    if field.widget.input_type != 'hidden' %}
+                <div class="form-group">
+        
+                        {{field.label(class="form-label mt-4")}}
+                        {{field(class="form-control")}}
+        
+                </div>
+        
+                    {% for error in field.errors %}
+                        {{ error(class="form-text text-muted") }}
+                    {% endfor %}
+                {% endfor %}
+                <div class="mt-4">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+            </form>
         </div>
-
-            {% for error in field.errors %}
-                {{ error }}
-            {% endfor %}
-        {% endfor %}
-        <button type="submit" class="btn btn-primary">Submit</button>
-    </form>
 {% endblock %}
