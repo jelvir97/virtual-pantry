@@ -3,30 +3,43 @@
 {% block title%}Recipe - {{rec.name}} {% endblock %}
 
 {% block contents %}
-    <h1>{{rec.name}}</h1>
-    <h2>{{cat.name}}</h2>
-
-    {% if rec not in current_user.saved_recipes %}
+<div class="container-fluid px-0 mt-4" style="display:flex; align-items: center;">
+    <h1 style="display: inline;" class="me-auto">{{rec.name}}</h1>
+    <span style="display: inline-block;">
+        {% if rec not in current_user.saved_recipes %}
         <form action="{{url_for('save_recipe',id=rec.id)}}" method="post">
-            <button type="submit">Save Recipe!</button>
+            <button class="btn btn-small btn-info mx-6" type="submit">Save Recipe!</button>
         </form>
     {% else %}
         <form action="{{url_for('unsave_recipe',id=rec.id)}}" method="post">
-            <button type="submit">Unsave Recipe</button>
+            <button class="btn btn-small btn-danger mx-6" type="submit">Unsave Recipe</button>
         </form>
 
     {% endif %}
-    <img src="{{rec.image + '/preview'}}" alt="">
+    </span>
+</div>
+<h3>Category: {{cat.name}}</h2>
+<hr>
+<div class="container-fluid bg-light rounded">
+    <div class="row p-3" style="width: 100%;">
+        <div class="col" style="width: 30%;">
+            <img src="{{rec.image}}" alt="" style="width: 100%;">
+        </div>
+        <div class="col">
+            <h3>Ingredients</h3>
+            <ul class="list-group">
+                    {% for i in rec.measurements%}
+                        <li class="list-group-item d-flex justify-content-between align-items-center">{{i}}</li>
+                    {% endfor %}
+            </ul>
+        </div>
+    </div>
 
 
-    <h3>Ingredients</h3>
-    <ul>
-        {% for i in rec.measurements%}
-            <li>{{i}}</li>
-        {% endfor %}
-    </ul>
-
-    <h3>Instructions</h3>
-    <p>{{rec.instructions}}</p>
+</div>
+<div class="container-fluid bg-dark rounded my-3 p-3">
+    <h3 class="text-primary">Instructions</h3>
+    <p class="text-light">{{rec.instructions}}</p>
+</div>
     
 {% endblock %}

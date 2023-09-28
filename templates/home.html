@@ -3,15 +3,18 @@
 {% block title%}Virtual Pantry - {{current_user.first_name}} {{current_user.last_name}}{% endblock %}
 
 {% block contents %}
-<h1>Dashboard</h1>
-<div class="row justify-content-center">
-    <div class="col-sm bg-primary rounded mx-3 pt-2">
+<h1 >Dashboard</h1>
+<div class="row justify-content-center mt-3">
+    <div class="col-sm bg-primary rounded mx-3 p-3 ">
 
-            <h3>Pantries</h3>
-            <div class="container">
+            <h3 class="text-light">Pantries</h3>
+            <div class="container-fluid">
                 {% for pantry in current_user.pantries %}
-                <div>
-                    <a href="{{url_for('view_pantry',p_id=pantry.id)}}" class="btn btn-outline-dark">{{pantry.name}}</a>
+                <div class="card text-white bg-info mb-3 p-2" style="max-width: 15rem;">
+                    <div class="card-body">
+                        <h4 class="card-title m-0">{{pantry.name}}</h4>
+                        <a href="{{url_for('view_pantry',p_id=pantry.id)}}" class="stretched-link"></a>
+                    </div>
                 </div>
                 {% endfor %}
             </div>
@@ -21,9 +24,9 @@
     </div>
     
     
-    <div class="col-sm bg-primary rounded justify-content-center mx-3 pt-2">
-        <h4>Suggested Recipe</h4>
-        <div class="card border-primary mb-3 mx-1" style="width: 9rem">
+    <div class="col-sm bg-primary rounded mx-3 p-3">
+        <h3 class="text-light">Suggested Recipe</h4>
+        <div class="card border-primary mb-3 mx-1 py-" style="width: 9rem">
             <img class="card-img-top" src="{{rec.image + '/preview'}}" alt="Card image cap">
 
             <div class="card-img-overlay">
@@ -38,16 +41,18 @@
                 {% endif %}
             </div>
             <div class="card-body">
-                <a href="{{url_for('view_recipe',id=rec.id)}}" class="link-dark">{{rec.name}}</a>
+                <a href="{{url_for('view_recipe',id=rec.id)}}" class="stretched-link ">{{rec.name}}</a>
             </div>
         </div>
     </div>
 </div>
 <br>
 <div class="col bg-light border border-primary rounded pt-2 pl-3" >
+    <div class="container">
+        <h3 style="display: inline;" class="me-auto">Recipes</h3>
+        <a href="{{url_for('new_user_recipe')}}" class="btn btn-primary">Add Recipe!</a>
+    </div>
 
-    <h3 style="display: inline-block;">Recipes</h3>
-    <a href="{{url_for('new_user_recipe')}}" class="btn btn-primary">Add Recipe!</a>
     <div class="" style="display: flex; flex-wrap: wrap; align-content:space-around;">
         {% for r in current_user.saved_recipes %}
 
@@ -67,7 +72,7 @@
                 {% endif %}
             </div>
             <div class="card-body">
-                <a href="{{url_for('view_recipe',id=r.id)}}">{{r.name}}</a>
+                <a href="{{url_for('view_recipe',id=r.id)}}" class="stretched-link ">{{r.name}}</a>
             </div>
         </div>
 
