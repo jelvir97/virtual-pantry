@@ -4,14 +4,16 @@
 
 {% block contents%}
     <h1>{{current_user.first_name}} {{current_user.last_name}}'s Profile</h1>
-    <div id="profile-info">
-        <img src="{{current_user.img_url}}" alt="" style="width: 250px;">
-        <div>
-            <ul>
-                <li>Name: {{current_user.first_name}} {{current_user.last_name}}</li>
-                <li>Email: {{current_user.email}}</li>
-            </ul>
+    <div id="profile-info" class="row d-flex bg-primary rounded py-5" style="justify-content: center;">
+        <div class="col-sm-auto">
+            <img src="{{current_user.img_url}}" alt="" style="width: 250px;">
         </div>
-        <a href="{{url_for('submit_user_update')}}">Update Profile</a>
+        <div class="col-5">
+            <ul class="list-group">
+                <li class="list-group-item">Name: {{current_user.first_name}} {{current_user.last_name}}</li>
+                <li class="list-group-item">Email: {{current_user.email}}</li>
+            </ul>
+            <a class="btn btn-sm btn-info" href="{{url_for('submit_user_update')}}">Update Profile</a>
+        </div>      
     </div>
 {% endblock%}
