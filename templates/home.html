@@ -8,7 +8,7 @@
     <div class="col-sm bg-primary rounded mx-3 p-3 ">
         <div class="container-fluid d-flex">
             <h3 class="text-light me-auto">Pantries</h3>
-            <a href="{{url_for('new_pantry')}}" class="btn btn-info btn-lg btn-block">New Pantry</a>
+            <a href="{{url_for('new_pantry')}}" class="btn btn-info btn-sm">New Pantry</a>
         </div>
 
         <div class="container-fluid d-flex" style="flex-wrap: wrap; align-content:space-around;">
@@ -55,7 +55,7 @@
         <a href="{{url_for('new_user_recipe')}}" class="btn btn-primary">Add Recipe!</a>
     </div>
 
-    <div class="" style="display: flex; flex-wrap: wrap; align-content:space-around;">
+    <div class="mx-4" style="display: flex; flex-wrap: wrap; align-content:space-around;">
         {% for r in current_user.saved_recipes %}
 
         <div class="card border-primary mb-3 mx-1" style="width: 9rem; display: inline-block; justify-content: center;">

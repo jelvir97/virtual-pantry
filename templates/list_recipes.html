@@ -4,12 +4,19 @@
 
 {% block contents %}
     <h1>Search Recipes by Ingredients - {{ing}}</h1>
-    <div id="search-recipe-container">
-        {% for r in recipes %}
-            <div>
-                <a href="{{url_for('recipe_search_id',id=r['idMeal'])}}">{{r['strMeal']}}</a>
-                <img src="{{r['strMealThumb'] + '/preview'}}" alt="">
-            </div>
-        {% endfor%}
+    <hr>
+    <div id="search-recipe-container" class="container-fluid d-flex" style="flex-wrap: wrap; justify-content:space-around;">
+        {% if recipes %}
+            {% for r in recipes %}
+                <div class="card border-primary mb-3 mx-1" style="width: 9rem; display: inline-block; justify-content: center;">
+                    <img class="card-img-top" src="{{r['strMealThumb'] + '/preview'}}" alt="Card image cap">
+                    <div class="card-body">
+                        <a href="{{url_for('recipe_search_id',id=r['idMeal'])}}" class="stretched-link ">{{r['strMeal']}}</a>
+                    </div>
+                </div>
+            {% endfor%}
+        {% else %}
+            <h3>No recipes found :(</h3>
+        {% endif %}
     </div>
 {% endblock %}
