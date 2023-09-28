@@ -4,6 +4,8 @@ $wrapper = $('#ing-wrapper')
 function handleAddIngField(evt){
     evt.preventDefault()
     $currField = $(evt.target).parent()
+    console.log($currField)
+    console.log($currField.next())
     $currField.next().show()
     $(evt.target).hide()
     

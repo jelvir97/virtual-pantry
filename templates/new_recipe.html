@@ -10,38 +10,35 @@
         {{ form.hidden_tag() }}
         {% for field in form
             if field.widget.input_type != 'hidden' and field.type != "FieldList" %}
-        <div>
-            <fieldset>
-                {{field.label}}
-                {{field}}
-                {% if field.type == "FieldList"%}
-                    <button id="add-ing-field">+</button>
-                {% endif %}
-            </fieldset>
+        <div class="form-group mt-2">
+                {{field.label(class="form-label")}}
+                {{field(class="form-control")}}
         </div>
 
             {% for error in field.errors %}
                 {{ error }}
             {% endfor %}
         {% endfor %}
-        <div>
-            <fieldset id="ing-wrapper">
-                {{form.ingredients.label}}              
-                <fieldset class="ing-field">      
-                    {{form.ingredients.append_entry()}}
-                    <button id="add-ing-field">+</button>  
+        <div id="ing-wrapper" class="form-group">
+                {{form.ingredients.label(class="mt-2")}}              
+                <fieldset class="ing-field input-group border border-primary container-fluid py-2">   
+                    <div class="me-auto">  
+                        {{form.ingredients.append_entry()}}
+                    </div> 
+                    <button id="add-ing-field" class="btn btn-sm btn-secondary">+</button>  
                 </fieldset>
                 {% for x in range(0,17) %}
-                <fieldset hidden class="ing-field">  
+                <fieldset class="ing-field input-group border border-primary container-fluid collapse py-2">  
+                    <div class="me-auto">  
                         {{form.ingredients.append_entry()}}
-                        <button id="add-ing-field">+</button>
-                        <button id="remove-ing-field">-</button>
+                    </div> 
+                    <button id="add-ing-field" class="btn btn-sm btn-secondary">+</button> 
+                    <button id="remove-ing-field" class="btn btn-sm btn-danger">-</button>
                 </fieldset>
                 {% endfor %}
 
-            </fieldset>
         </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
+        <button type="submit" class="btn btn-primary mt-4">Submit</button>
     </form>
 {% endblock %}
 

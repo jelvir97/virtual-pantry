@@ -59,7 +59,7 @@
         {% for r in current_user.saved_recipes %}
 
         <div class="card border-primary mb-3 mx-1" style="width: 9rem; display: inline-block; justify-content: center;">
-            <img class="card-img-top" src="{{r.image + '/preview'}}" alt="Card image cap">
+            <img class="card-img-top" src="{{r.image}}" alt="Card image cap">
             <div class="card-img-overlay" style="height: 10%;">
                 {% if r not in current_user.saved_recipes %}
                     <form action="{{url_for('save_recipe',id=r.id)}}" method="post">
