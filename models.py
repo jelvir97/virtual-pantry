@@ -3,7 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin
 from flask_bcrypt import Bcrypt
 from sqlalchemy_utils import EmailType, URLType
-from wtforms import PasswordField
+from wtforms import PasswordField, RadioField
 import sqlalchemy
 # from psycopg2.errors import UniqueViolation
 # from sqlalchemy.exc import IntegrityError
@@ -187,7 +187,9 @@ class Pantry(db.Model):
     
     type = db.Column(db.String(20),
                      nullable=False,
-                     info={'label': 'Type', 'choices':[('pantry','Pantry'),('fridge','Fridge'),('freezer','Freezer')]})
+                     info={'label': 'Type',
+                           'form_field_class': RadioField,
+                            'choices':[('pantry','Pantry'),('fridge','Fridge'),('freezer','Freezer')]})
     
     ingredients =db.relationship('Ingredient',
                                   secondary='ingredient_pantry', 

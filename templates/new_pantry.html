@@ -8,19 +8,33 @@
 <h2>Add New Pantry</h2>
     <form action="{{ url_for('new_pantry') }}" method="POST">
         {{ form.hidden_tag() }}
-        {% for field in form
-            if field.widget.input_type != 'hidden' %}
-        <div>
-            <fieldset>
-                {{field.label}}
-                {{field}}
-            </fieldset>
+        <div class="form-group mt-2">
+                {{form.name.label(class="form-label")}}
+                {{form.name(class="form-control")}}
         </div>
 
-            {% for error in field.errors %}
+            {% for error in form.name.errors %}
                 {{ error }}
             {% endfor %}
-        {% endfor %}
-        <button type="submit" class="btn btn-primary">Submit</button>
+
+        <div class="form-group mt-2">
+            {{form.type.label(class="form-label")}}
+            <div class="form-control d-flex p-3", style="justify-content: space-around;">
+                {% for c in form.type %}
+                <div class="d-flex" style="align-items: center;">
+                    {{c}}
+                    <span class="mx-3"></span>
+                    {{c.label(style="position:relative; top:9px;")}}
+                </div>
+                {% endfor %}
+            </div>
+
+        </div>
+
+            {% for error in form.type.errors %}
+                {{ error }}
+            {% endfor %}
+
+        <button type="submit" class="btn btn-primary mt-4">Submit</button>
     </form>
 {% endblock %}
