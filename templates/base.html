@@ -41,7 +41,7 @@
     
     <div class="container px-8 align-items-center my-4">
         {% for msg in get_flashed_messages() %}
-            <div class="alert alert-dismissible">
+            <div class="alert alert-dismissible alert-secondary">
                 <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                 <h4 class="alert-heading">Alert</h4>
                 <p class="mb-0">{{msg}}</p>
