@@ -4,24 +4,33 @@
 
 {% block contents %}
 <h1>{{pantry.name}}</h1>
-<div>
-    <h3>Ingredients</h3>
-    <ul id="ing-list">
-        {% for i in pantry.ingredients %}
-            <li><a href="{{url_for('recipe_search',ing=i.name)}}">{{i.name}}</a>
-                <form action="{{url_for('pantry_ingredient_remove', p_id=pantry.id,i_id=i.id)}}" method="post">
-                    <button type="submit">&#10005;</button>
-                </form>
-            </li>
-        {% endfor %}
-    </ul>
-</div>
-<div>
-    <h3>Add Ingredients</h3>
-    <div class="search-container" >
-        <input type="text" name="ing" id="ing" placeholder="Search Ingredient" data-pantry-id="{{pantry.id}}">
-        <div class="suggestions">
-            <ul></ul>
+<hr>
+<div class="row">
+    <div class="col-lg-9 border-right">
+        <h3>Ingredients</h3>
+        <ul id="ing-list" class="" style="display: flex; justify-content: space-around; flex-wrap: wrap;">
+            {% for i in pantry.ingredients %}
+            <div class="rounded border border-primary px-3 py-2 my-2 mx-1">
+                <li>
+                    <form action="{{url_for('pantry_ingredient_remove', p_id=pantry.id,i_id=i.id)}}" method="post">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <h5><a href="{{url_for('recipe_search',ing=i.name)}}" class="link-opacity-50-hover p-6">{{i.name}}</a></h5>
+                            <span class="m-2"></span>
+                            <button class="btn btn-sm btn-danger" type="submit">&#10005;</button>
+                        </div>
+                    </form>
+                </li>
+            </div>
+            {% endfor %}
+        </ul>
+    </div>
+    <div class="col-sm-auto" style="width: 15%;">
+        <h3>Add Ingredients</h3>
+        <div class="search-container" >
+            <input type="text" name="ing" id="ing" placeholder="Search Ingredient" data-pantry-id="{{pantry.id}}">
+            <div class="suggestions list-group">
+                <ul class="list-group"></ul>
+            </div>
         </div>
     </div>
 </div>

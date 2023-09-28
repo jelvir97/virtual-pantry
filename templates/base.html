@@ -18,10 +18,10 @@
                     <li class="nav-item"></li>            
                 {% if current_user.is_authenticated %}
                     <li class="nav-item">
-                        <a href="{{url_for('home')}}" class="nav-link">Home</a>
+                        <a href="{{url_for('home')}}" class="nav-link text-light">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{url_for('user_profile')}}" class="nav-link">Profile</a>
+                        <a href="{{url_for('user_profile')}}" class="nav-link text-light">Profile</a>
                     </li>
                 {% endif %}
                 </ul>
@@ -50,6 +50,8 @@
     {% block contents%}
     {% endblock %}
     </div>
+    <script src="https://code.jquery.com/jquery-3.2.1.js"></script>
+    <script src="/static/alerts.js"></script>
     {% block script %}{% endblock %}
 </body>
 </html>

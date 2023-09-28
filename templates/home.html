@@ -6,49 +6,51 @@
 <h1 >Dashboard</h1>
 <div class="row justify-content-center mt-3">
     <div class="col-sm bg-primary rounded mx-3 p-3 ">
-
-            <h3 class="text-light">Pantries</h3>
-            <div class="container-fluid">
-                {% for pantry in current_user.pantries %}
-                <div class="card text-white bg-info mb-3 p-2" style="width: fit-content;">
-                    <div class="card-body">
-                        <h4 class="card-title m-0">{{pantry.name}}</h4>
-                        <a href="{{url_for('view_pantry',p_id=pantry.id)}}" class="stretched-link"></a>
-                    </div>
-                </div>
-                {% endfor %}
-            </div>
-            
+        <div class="container-fluid d-flex">
+            <h3 class="text-light me-auto">Pantries</h3>
             <a href="{{url_for('new_pantry')}}" class="btn btn-info btn-lg btn-block">New Pantry</a>
+        </div>
 
+        <div class="container-fluid d-flex" style="flex-wrap: wrap; align-content:space-around;">
+            {% for pantry in current_user.pantries %}
+            <div class="card text-white bg-info m-1 p-2" style="width: fit-content;">
+                <div class="card-body">
+                    <h4 class="card-title m-0">{{pantry.name}}</h4>
+                    <a href="{{url_for('view_pantry',p_id=pantry.id)}}" class="stretched-link"></a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
     </div>
     
     
     <div class="col-sm bg-primary rounded mx-3 p-3">
         <h3 class="text-light">Suggested Recipe</h4>
-        <div class="card border-primary mb-3 mx-1 py-" style="width: 9rem">
-            <img class="card-img-top" src="{{rec.image + '/preview'}}" alt="Card image cap">
+        <div class="d-flex" style="justify-content: center;">
+            <div class="card border-primary mb-3 mx-1 py-1" style="width: 50%; height: 18rem;">
+                <img class="card-img-top" style="overflow: hidden;" src="{{rec.image}}" alt="Card image cap">
 
-            <div class="card-img-overlay" style="height: 10%;">
-                {% if rec not in current_user.saved_recipes %}
-                    <form action="{{url_for('save_recipe',id=rec.id)}}" method="post">
-                        <button type="submit" class="btn btn-sm btn-info btn-lg btn-block">Save Recipe!</button>
-                    </form>
-                {% else %}
-                    <form action="{{url_for('unsave_recipe',id=rec.id)}}" method="post">
-                        <button type="submit" class="btn btn-sm btn-lg btn-block">Unsave Recipe</button>
-                    </form>
-                {% endif %}
-            </div>
-            <div class="card-body">
-                <a href="{{url_for('view_recipe',id=rec.id)}}" class="card-link ">{{rec.name}}</a>
+                <div class="card-img-overlay" style="height: 10%;">
+                    {% if rec not in current_user.saved_recipes %}
+                        <form action="{{url_for('save_recipe',id=rec.id)}}" method="post">
+                            <button type="submit" class="btn btn-sm btn-info btn-lg btn-block">Save Recipe!</button>
+                        </form>
+                    {% else %}
+                        <form action="{{url_for('unsave_recipe',id=rec.id)}}" method="post">
+                            <button type="submit" class="btn btn-sm btn-lg btn-block">Unsave Recipe</button>
+                        </form>
+                    {% endif %}
+                </div>
+                <div class="card-body">
+                    <a href="{{url_for('view_recipe',id=rec.id)}}" class="card-link ">{{rec.name}}</a>
+                </div>
             </div>
         </div>
     </div>
 </div>
 <br>
 <div class="col bg-light border border-primary rounded pt-2 pl-3" >
-    <div class="container">
+    <div class="container-fluid d-flex my-2" style="align-items: center;">
         <h3 style="display: inline;" class="me-auto">Recipes</h3>
         <a href="{{url_for('new_user_recipe')}}" class="btn btn-primary">Add Recipe!</a>
     </div>
