@@ -5,17 +5,17 @@
 
 {% block contents %}
 
-<h1>{{current_user.first_name}} {{current_user.last_name}}'s Profile</h1>
-
+<h1>Update: {{current_user.first_name}} {{current_user.last_name}}'s Profile</h1>
+<div class="form-group">
     <form action="{{ url_for('submit_user_update') }}" method="post">
         {{ form.hidden_tag() }}
         {{ form.csrf_token }}
         {% for field in form
             if field.widget.input_type != 'hidden' %}
-        <div>
+        <div class="mt-2">
             <fieldset>
-                {{field.label}}
-                {{field}}
+                {{field.label(class="form-label")}}
+                {{field(class="form-control")}}
             </fieldset>
         </div>
 
@@ -23,6 +23,7 @@
                 {{ error }}
             {% endfor %}
         {% endfor %}
-        <button type="submit" class="btn btn-primary">Submit</button>
+        <button type="submit" class="btn btn-primary mt-4">Submit</button>
     </form>
+</div>
 {% endblock %}
