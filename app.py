@@ -79,8 +79,9 @@ def signup():
             db.session.rollback()
             form.email.errors.append('There is already an account with this email!')
             return render_template('signup.html',form=form)
-        
-        login_user(user)
+        else:
+
+            login_user(user)
         flash('Signed Up Successfully.')
 
         return redirect(url_for('home'))
