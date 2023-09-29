@@ -1,4 +1,5 @@
 import flask
+import os
 from flask import Flask, render_template,flash,get_flashed_messages, request,session, redirect,url_for,jsonify
 from flask_debugtoolbar import DebugToolbarExtension
 from models import connect_db, db, Ingredient, Recipe, Category, Pantry, User
@@ -42,6 +43,9 @@ def home():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     """logs in user"""
+    print(app.config['SQLALCHEMY_DATABASE_URI'])
+    print(app.config['SECRET_KEY'])
+    print(os.getenv('SECRET_KEY'))
     if current_user.is_authenticated:
         return redirect(url_for('home'))
     # Here we use a class of some kind to represent and validate our
