@@ -6,6 +6,7 @@ from flask_login import LoginManager,login_required, login_user,logout_user, cur
 from forms import LoginForm, RegisterForm, PantryForm, RecipeForm, UserUpdateForm
 import requests
 from  sqlalchemy.sql.expression import func
+from sqlalchemy.exc import IntegrityError
 
 app = Flask(__name__)
 
@@ -67,12 +68,18 @@ def signup():
         return redirect(url_for('home'))
     form = RegisterForm()
     if form.validate_on_submit():
-        user = User.register(first_name=form.data['first_name'],
-                             last_name=form.data['last_name'],
-                             email=form.data['email'],
-                             password=form.data['password'])
-        db.session.add(user)
-        db.session.commit()
+        try:
+            user = User.register(first_name=form.data['first_name'],
+                                last_name=form.data['last_name'],
+                                email=form.data['email'],
+                                password=form.data['password'])
+            db.session.add(user)
+            db.session.commit()
+        except IntegrityError:
+            db.session.rollback()
+            form.email.errors.append('There is already an account with this email!')
+            return render_template('signup.html',form=form)
+        
         login_user(user)
         flash('Signed Up Successfully.')
 
