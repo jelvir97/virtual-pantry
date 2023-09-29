@@ -11,10 +11,10 @@ from sqlalchemy.exc import IntegrityError
 
 app = Flask(__name__)
 
-app.config["SQLALCHEMY_DATABASE_URI"] = 'postgresql:///virtual_pantry'
+app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv('DATABASE_URL')
 # app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 # app.config["SQLALCHEMY_ECHO"] = True
-app.config["SECRET_KEY"] = 'mangotreeee'
+app.config["SECRET_KEY"] = os.getenv('SECRET_KEY')
 # app.config["DEBUG_TB_INTERCEPT_REDIRECTS"] = False
 
 app.app_context().push()
@@ -45,7 +45,6 @@ def login():
     """logs in user"""
     print(app.config['SQLALCHEMY_DATABASE_URI'])
     print(app.config['SECRET_KEY'])
-    print(os.getenv('SECRET_KEY'))
     if current_user.is_authenticated:
         return redirect(url_for('home'))
     # Here we use a class of some kind to represent and validate our
