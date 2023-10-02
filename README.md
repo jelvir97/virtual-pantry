@@ -34,25 +34,25 @@ Users will be asked to sign up, or log in if an account exists. Once logged in t
 Download zip or clone repository
 
 Create virtual environment and activate:
-`$ python3 -m venv venv`
-`$ source venv/bin/activate`
+>`$ python3 -m venv venv`
+>`$ source venv/bin/activate`
 
 Install dependencies:
-`$ pip install -r requirements.txt`
+>`$ pip install -r requirements.txt`
 
 Create local postgres DB:
-`$ createdb virtual_pantry`
+>`$ createdb virtual_pantry`
 
 In app.py set DB URL and secret key:
-`app.config["SQLALCHEMY_DATABASE_URI"] = postgresql:///virtual_pantry`
-`app.config["SECRET_KEY"] = secret_key`
+>`app.config["SQLALCHEMY_DATABASE_URI"] = postgresql:///virtual_pantry`
+>`app.config["SECRET_KEY"] = secret_key`
 
 Seed DB:
-`$ ipython`
-`%run seed.py`
+>`$ ipython`
+>`%run seed.py`
 
 Finally, start server:
-`flask run --debug`
+>`flask run --debug`
 
 ## Other Notes
 The deployed project is hosted on render.com using a free instance. Free instances spin down with more than 15 minutes of inactivity. Please allow a few minutes for server to restart when using. Thank you!
