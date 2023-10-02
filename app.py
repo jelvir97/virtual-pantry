@@ -71,6 +71,7 @@ def signup():
         return redirect(url_for('home'))
     form = RegisterForm()
     print(form['csrf_token'])
+    print(form.data['csrf_token'])
     if form.validate_on_submit():
         try:
             user = User.register(first_name=form.data['first_name'],
