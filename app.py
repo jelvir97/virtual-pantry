@@ -70,6 +70,7 @@ def signup():
     if current_user.is_authenticated:
         return redirect(url_for('home'))
     form = RegisterForm()
+    print(form['csrf_token'])
     if form.validate_on_submit():
         try:
             user = User.register(first_name=form.data['first_name'],
@@ -88,7 +89,7 @@ def signup():
         flash('Signed Up Successfully.')
 
         return redirect(url_for('home'))
-
+    print(form['csrf_token'])
     return render_template('signup.html',form=form)
     
 @app.route('/profile')
