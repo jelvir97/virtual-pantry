@@ -35,6 +35,7 @@ Download zip or clone repository
 
 Create virtual environment and activate:
 >`$ python3 -m venv venv`
+<!---->
 >`$ source venv/bin/activate`
 
 Install dependencies:
@@ -45,10 +46,12 @@ Create local postgres DB:
 
 In app.py set DB URL and secret key:
 >`app.config["SQLALCHEMY_DATABASE_URI"] = postgresql:///virtual_pantry`
+<!---->
 >`app.config["SECRET_KEY"] = secret_key`
 
 Seed DB:
 >`$ ipython`
+<!---->
 >`%run seed.py`
 
 Finally, start server:
